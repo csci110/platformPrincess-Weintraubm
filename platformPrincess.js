@@ -100,7 +100,7 @@ class Princess extends Sprite {
             this.y = this.y - 1.25 * this.height; // jump
         }
     }
-    handleBoundaryContact(){
+    handleBoundaryContact() {
         game.end('Princess Ann has drowned.\n\nBetter luck next time.');
     }
 }
@@ -108,18 +108,146 @@ class Princess extends Sprite {
 let ann = new Princess();
 
 class Door extends Sprite {
-    constructor (){
+    constructor() {
         super();
         this.setImage("door.png");
         this.x = game.displayWidth - 48;
-        this.y = finishPlatform.y -2 *48;
+        this.y = finishPlatform.y - 2 * 48;
         this.accelerateOnBounce = false;
     }
-    handleCollision (otherSprite){
+    handleCollision(otherSprite) {
         if (otherSprite == ann) {
-           game.end('Congratulations!\n\nPrincess Ann can now pursue the\nstranger deeper into the castle!'); 
+            game.end('Congratulations!\n\nPrincess Ann can now pursue the\nstranger deeper into the castle!');
         }
     }
 }
 
 let exit = new Door();
+
+class spider extends Sprite {
+    constructor(x, y) {
+        super();
+        this.name = "Spider";
+        this.setImage("spider.png");
+        this.x = x;
+        this.y = y;
+        this.speed = 48;
+        this.accelerateOnBounce = false;
+        this.defineAnimation("creep", 1, 3);
+        this.playAnimation("creep", true);
+
+
+    }
+    handleGameLoop() {
+        if (this.y > ann.y + 48) {
+            this.angle = 90;
+        }
+        if (this.y < ann.y - 48) {
+            this.angle = 270;
+
+        }
+
+
+    }
+    handleCollision(otherSprite) {
+
+        // Spiders only care about collisons with Ann.
+
+        if (otherSprite === ann) {
+
+            // Spiders must hit Ann on top of her head.
+
+            let horizontalOffset = this.x - otherSprite.x;
+
+            let verticalOffset = this.y - otherSprite.y;
+
+            if (Math.abs(horizontalOffset) < this.width / 2 &&
+
+                Math.abs(verticalOffset) < 30) {
+
+                otherSprite.y = otherSprite.y + 1; // knock Ann off platform
+
+            }
+
+        }
+
+        return false;
+
+    }
+}
+
+new spider(200, 225);
+
+new spider(550, 200);
+
+
+
+class Bat extends Sprite {
+    constructor(x, y) {
+        super();
+        this.x = this.startX = x;
+        this.y = this.starty = y;
+        this.name = "a Scary Bat";
+        this.setImage("bat.png");
+        this.accelerateOnBounce = false;
+        this.defineAnimation("flap", 0, 2);
+        this.playAnimation("flap", true);
+        this.attackspeed = 300;
+        this.angle = 45 + Math.round(Math.random() * 3) * 90;
+        this.speed = this.normalSpeed = 20;
+        this.angleTimer = 0;
+    }
+    handleAttack() {
+        this.speed = this.attackspeed;
+        this.aimFor(ann.x, ann.y);
+    }
+
+
+    handleCollision(otherSprite) {
+        if (otherSprite != ann) {
+            return;
+        }
+        if (otherSprite === ann) {
+
+            let horizontalOffset = this.x - otherSprite.x;
+
+            let verticalOffset = this.y - otherSprite.y;
+
+            otherSprite.y = otherSprite.y + 1;
+
+        }
+    }
+
+
+
+
+    handleGameLoop() {
+        if (Math.random() < 0.001) {
+            this.handleAttack();
+        }
+        if (Math.round(this.speed) === this.normalSpeed) {
+            this.angle = 45 + Math.round(Math.random() * 3) * 90;
+
+        }
+        let now = game.getTime();
+
+        if (now - this.angleTimer >= 5) {
+
+            this.angleTimer = now;
+            this.angle + 90;
+        }
+    }
+    handleBoundaryContact() {
+        if (this.y < 0) {
+            this.y = 0;
+        }
+        if (this.y > game.displayHeight) {
+            this.y = this.starty;
+            this.speed === this.normalSpeed;
+            this.angle = 225;
+        }
+    }
+}
+
+let rightBat = new Bat(500, 75);
+let leftBat = new Bat(200, 100);
