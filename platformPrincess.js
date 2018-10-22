@@ -204,18 +204,19 @@ class Bat extends Sprite {
 
 
     handleCollision(otherSprite) {
-        if (otherSprite != ann) {
-            return;
-        }
         if (otherSprite === ann) {
-
             let horizontalOffset = this.x - otherSprite.x;
-
             let verticalOffset = this.y - otherSprite.y;
+            if (Math.abs(horizontalOffset) < this.width / 2 && Math.abs(verticalOffset) < 30) {
+                if (!ann.isFalling) {
+                    otherSprite.y = otherSprite.y + 1;
+                }
 
-            otherSprite.y = otherSprite.y + 1;
-
+            }
+            if (otherSprite === !ann)
+                return false;
         }
+
     }
 
 
@@ -225,7 +226,7 @@ class Bat extends Sprite {
         if (Math.random() < 0.001) {
             this.handleAttack();
         }
-        if (Math.round(this.speed) === this.normalSpeed) {
+        if (Math.round(this.speed) === Math.round(this.normalSpeed)) {
             this.angle = 45 + Math.round(Math.random() * 3) * 90;
 
         }
@@ -238,15 +239,10 @@ class Bat extends Sprite {
         }
     }
     handleBoundaryContact() {
-        if (this.y < 0) {
-            this.y = 0;
-        }
-        if (this.y > game.displayHeight) {
-            this.y = this.starty;
-            this.speed === this.normalSpeed;
-            this.angle = 225;
-        }
+        this.x = this.startX;
+        this.y = this.starty;
     }
+
 }
 
 let rightBat = new Bat(500, 75);

@@ -34,11 +34,13 @@ class Platform extends Support {
     }
 }
 
-let startPlatform = new Platform(0, 500, "start.png");
+let startPlatform = new Platform(0, 100, "tileTopRight.png");
 
-let finishPlatform = new Platform(game.displayWidth - 48 * 2, 400, "finish.png");
+let finishPlatform = new Platform(game.displayWidth - 48 * 2, 500, "tileTopLeft.png");
 
+let newplatform = new Platform(0, 200, "tileBottomRight.png");
 
+let stopPlatform = new Platform(0, 500, "tileTopRight.png");
 
 class Slider extends Support {
     constructor(x, y, angle) {
@@ -50,17 +52,19 @@ class Slider extends Support {
         this.setImage("slider.png");
         this.speed = 48;
     }
+    
+   
 }
 
-new Slider(startPlatform.x + 48 * 3, startPlatform.y + 48, 0);
-new Slider(finishPlatform.x - 48 * 5, finishPlatform.y + 48, 180);
+//new Slider(startPlatform.x + 48 * 3,  + 48, 0);
+new Slider(finishPlatform.x - 48 * 5, finishPlatform.y , 180);
 
 class Princess extends Sprite {
     constructor() {
         super();
         this.setImage("ann.png");
         this.x = 48;
-        this.y = 300;
+        this.y = 0;
         this.speed = 0;
         this.speedWhenWalking = 125;
         this.defineAnimation("left", 9, 11);
