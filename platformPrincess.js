@@ -213,12 +213,12 @@ class Bat extends Sprite {
                 }
 
             }
-            if (otherSprite === !ann)
+            if (otherSprite === !ann) {
                 return false;
+            }
+
         }
-
     }
-
 
 
 
@@ -232,7 +232,7 @@ class Bat extends Sprite {
         }
         let now = game.getTime();
 
-        if (now - this.angleTimer >= 5) {
+        if (now - this.angleTimer > 5) {
 
             this.angleTimer = now;
             this.angle + 90;

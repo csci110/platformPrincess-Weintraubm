@@ -2,14 +2,14 @@ import { game, Sprite } from "./sgc/sgc.js";
 game.setBackground("Cemetery.png", 0, 0);
 
 //class Wall extends Sprite {
-   // constructor() {
-      //  super();
-      //  this.name = "Boring Wall";
-      //  this.setImage("wall.png");
-       // this.x = 0;
-       // this.y = 175;
-       // this.accelerateOnBounce = false;
-  //  }
+// constructor() {
+//  super();
+//  this.name = "Boring Wall";
+//  this.setImage("wall.png");
+// this.x = 0;
+// this.y = 175;
+// this.accelerateOnBounce = false;
+//  }
 //}
 
 //let wall = new Wall();
@@ -43,21 +43,32 @@ let newplatform = new Platform(0, 200, "tileBottomRight.png");
 let stopPlatform = new Platform(0, 500, "tileTopRight.png");
 
 class Slider extends Support {
-    constructor(x, y, angle) {
+    constructor(x, y) {
         super();
         this.name = "A Sliding Him Support";
         this.x = x;
         this.y = y;
-        this.angle = angle;
         this.setImage("slider.png");
+        this.angle = 180;
         this.speed = 48;
     }
-    
-   
+
+    // handleGameLoop() {
+    // if (this.x === 350) {
+    //     this.angle = 90;
+    // }
+    //   else if (this.y == 100) {
+    // this.angle = 270;
+    //  }
+    //   else(this.y == 500) {
+    //       this.angle = 0;
+    // }
+
+    // }
 }
 
 //new Slider(startPlatform.x + 48 * 3,  + 48, 0);
-new Slider(finishPlatform.x - 48 * 5, finishPlatform.y , 180);
+new Slider(finishPlatform.x - 48 * 5, finishPlatform.y);
 
 class Princess extends Sprite {
     constructor() {
@@ -104,26 +115,97 @@ class Princess extends Sprite {
             this.y = this.y - 1.25 * this.height; // jump
         }
     }
-    handleBoundaryContact(){
+    handleBoundaryContact() {
         game.end('Princess Ann has drowned.\n\nBetter luck next time.');
     }
 }
 
 let ann = new Princess();
 
+
+
+class Crate extends Sprite {
+    constructor() {
+        super();
+        this.x = 100;
+        this.y = 400;
+        this.setImage("Crate.png");
+        this.accelerateOnBounce = true;
+        this.speed = 0;
+
+    }
+    handleGameLoop() {
+        this.isFalling = false;
+        let supports = game.getSpritesOverlapping(this.x, this.y + this.height, this.width, 1, Support);
+        if (supports.length === 0 || supports[0].y < this.y + this.height) {
+            this.isFalling = true;
+            this.y = this.y + 4;
+            this.x = Math.max(10, this.x);
+            this.speed == 0;
+        }
+    }
+    handleBoundaryContact() {
+        game.end('Lootbox is lost\n\n GAME OVER!');
+    }
+
+}
+
+let crate = new Crate;
+
 class Door extends Sprite {
-    constructor (){
+    constructor() {
         super();
         this.setImage("door.png");
         this.x = game.displayWidth - 48;
-        this.y = finishPlatform.y -2 *48;
+        this.y = finishPlatform.y - 2 * 48;
         this.accelerateOnBounce = false;
     }
-    handleCollision (otherSprite){
-        if (otherSprite == ann) {
-           game.end('Congratulations!\n\nPrincess Ann can now pursue the\nstranger deeper into the castle!'); 
+    handleCollision(otherSprite) {
+        if (otherSprite == crate) {
+            game.end('Congratulations!\n\nPrincess Ann can now pursue the\nstranger deeper into the castle!');
         }
     }
 }
 
 let exit = new Door();
+
+
+class Bones extends Sprite {
+    constructor(x, y, image) {
+        super();
+        this.x = x;
+        this.y = y;
+        this.setImage(image);
+        this.accelerateOnBounce = true;
+    }
+    handleGameLoop() {
+        this.isFalling = false;
+        let supports = game.getSpritesOverlapping(this.x, this.y + this.height, this.width, 1, Support);
+        if (supports.length === 0 || supports[0].y < this.y + this.height) {
+            this.isFalling = true;
+            this.y = this.y + 4;
+
+
+        }
+
+    }
+    handleCollision(otherSprite) {
+        if (otherSprite === ann) {
+            let horizontalOffset = this.x - otherSprite.x;
+            let verticalOffset = this.y - otherSprite.y;
+            if (Math.abs(horizontalOffset) < this.width / 2 && Math.abs(verticalOffset) < 30) {
+                if (!ann.isFalling) {
+                    otherSprite.y = otherSprite.y + 1;
+                }
+
+            }
+            if (otherSprite === !ann) {
+                return false;
+            }
+
+        }
+
+    }
+}
+
+let bones =new Bones(400,70,"Bone_2_.png");
