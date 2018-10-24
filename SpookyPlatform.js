@@ -249,5 +249,5 @@ class Bones extends Sprite {
 }
 
 
-let bones = new Bones(450, 0, "Bone2.png");
-let legbones = new Bones(150, 0, "Bone3.png");
+//let bones = new Bones(450, 0, "Bone2.png");
+//let legbones = new Bones(150, 0, "Bone3.png");
