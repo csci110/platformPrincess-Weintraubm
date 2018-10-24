@@ -50,21 +50,31 @@ class Slider extends Support {
         this.y = y;
         this.setImage("slider.png");
         this.angle = 180;
-        this.speed = 48;
+        this.speed = 108;
+        this.accelerateOnBounce = true;
     }
 
-    // handleGameLoop() {
-    // if (this.x === 350) {
-    //     this.angle = 90;
-    // }
-    //   else if (this.y == 100) {
-    // this.angle = 270;
-    //  }
-    //   else(this.y == 500) {
-    //       this.angle = 0;
-    // }
+    handleGameLoop() {
 
-    // }
+        if (this.y <= 100) {
+            this.angle = 270;
+        }
+        if (this.y >= 550) {
+            this.angle = 180;
+            this.y = 500;
+        }
+        
+
+
+    }
+    handleCollision(otherSprite) {
+        if (otherSprite == finishPlatform)
+            this.angle = 90;
+    }
+    if (otherSprite = stopPlatform) {
+        this.angle = 0;
+
+    }
 }
 
 //new Slider(startPlatform.x + 48 * 3,  + 48, 0);
@@ -127,7 +137,7 @@ let ann = new Princess();
 class Crate extends Sprite {
     constructor() {
         super();
-        this.x = 100;
+        this.x = 80;
         this.y = 400;
         this.setImage("Crate.png");
         this.accelerateOnBounce = true;
@@ -141,7 +151,7 @@ class Crate extends Sprite {
             this.isFalling = true;
             this.y = this.y + 4;
             this.x = Math.max(10, this.x);
-            this.speed == 0;
+            this.speed = 0;
         }
     }
     handleBoundaryContact() {
@@ -208,4 +218,4 @@ class Bones extends Sprite {
     }
 }
 
-let bones =new Bones(400,70,"Bone_2_.png");
+let bones = new Bones(400, 70, "Bone2.png");

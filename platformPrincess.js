@@ -227,15 +227,12 @@ class Bat extends Sprite {
             this.handleAttack();
         }
         if (Math.round(this.speed) === Math.round(this.normalSpeed)) {
-            this.angle = 45 + Math.round(Math.random() * 3) * 90;
+            let now = game.getTime();
+            if (now - this.angleTimer > 5) {
+                this.angleTimer = now;
+                this.angle = 90 + Math.round(Math.random() * 1) * 90;
 
-        }
-        let now = game.getTime();
-
-        if (now - this.angleTimer > 5) {
-
-            this.angleTimer = now;
-            this.angle + 90;
+            }
         }
     }
     handleBoundaryContact() {
