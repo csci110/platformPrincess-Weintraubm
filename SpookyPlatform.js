@@ -138,7 +138,7 @@ class Princess extends Sprite {
     }
     handleSpacebar() {
         if (!this.isFalling) {
-            this.y = this.y - 1.25 * this.height; // jump
+            this.y = this.y - 4.25 * this.height; // jump
         }
     }
     handleBoundaryContact() {
@@ -209,14 +209,14 @@ class Bones extends Sprite {
         this.accelerateOnBounce = true;
     }
     handleGameLoop() {
-        this.isFalling = false;
-        let supports = game.getSpritesOverlapping(this.x, this.y + this.height, this.width, 1, Support);
-        if (supports.length === 0 || supports[0].y < this.y + this.height) {
-            this.isFalling = true;
-            this.y = this.y + 4;
+       // this.isFalling = false;
+        //let supports = game.getSpritesOverlapping(this.x, this.y + this.height, this.width, 1, Support);
+       // if (supports.length === 0 || supports[0].y < this.y + this.height) {
+          //  this.isFalling = true;
+          //  this.y = this.y + 4;
 
 
-        }
+     //   }
 
     }
     handleCollision(otherSprite) {
@@ -233,7 +233,7 @@ class Bones extends Sprite {
 
                 }
                 if (otherSprite === !ann) {
-                    return false;
+                    return true;
                 }
 
 
@@ -249,5 +249,5 @@ class Bones extends Sprite {
 }
 
 
-//let bones = new Bones(450, 0, "Bone2.png");
-//let legbones = new Bones(150, 0, "Bone3.png");
+let bones = new Bones(450, 200, "Bone2.png");
+let legbones = new Bones(350, 200, "Bone3.png");
