@@ -36,11 +36,15 @@ class Platform extends Support {
 
 let startPlatform = new Platform(0, 100, "tileTopRight.png");
 
-let finishPlatform = new Platform(game.displayWidth - 48 * 2, 500, "tileTopLeft.png");
+let finishPlatform = new Platform(game.displayWidth - 48 * 2, 400, "tileTopLeft.png");
 
 let newplatform = new Platform(0, 200, "tileBottomRight.png");
 
 let stopPlatform = new Platform(0, 500, "tileTopRight.png");
+
+//let newplatform2 = new Platform(0, 600, "tile5.png");
+
+//let newplatform3 = new Platform(game.displayWidth - 48 * 2, 500, "Tile5.png");
 
 class Slider extends Support {
     constructor(x, y) {
@@ -56,29 +60,38 @@ class Slider extends Support {
 
     handleGameLoop() {
 
-        if (this.y <= 100) {
-            this.angle = 270;
-        }
-        if (this.y >= 550) {
+        if (this.y <= 300) {
             this.angle = 180;
-            this.y = 500;
+            this.accelerateOnBounce = false;
+
         }
-        
 
-
+        // if (this.x == 172 - 5) { // MAKE GO UP mk8
+        //  this.angle = 90;
+        //  this.accelerateOnBounce = false;
+        // }
+        // if (this.x == 400) {                //MAKE GO UP mk2
+        // this.angle = 90;
+        // }
+        //
     }
     handleCollision(otherSprite) {
-        if (otherSprite == finishPlatform)
+        if (otherSprite == finishPlatform) { //MAKE GO Up mk7 & 9
             this.angle = 90;
-    }
-    if (otherSprite = stopPlatform) {
-        this.angle = 0;
-
+            this.accelerateOnBounce = false;
+        }
+        if (otherSprite == stopPlatform) { //MAKE GO right mk6
+            this.angle = 0;
+            this.accelerateOnBounce = false;
+        }
+        if (otherSprite == newplatform) { //MAKE GO right mk6
+            this.angle = 270;
+            this.accelerateOnBounce = false;
+        }
     }
 }
-
 //new Slider(startPlatform.x + 48 * 3,  + 48, 0);
-new Slider(finishPlatform.x - 48 * 5, finishPlatform.y);
+new Slider(finishPlatform.x - 48 * 5, finishPlatform.y + 128);
 
 class Princess extends Sprite {
     constructor() {
@@ -93,6 +106,7 @@ class Princess extends Sprite {
 
 
 
+
     }
     handleLeftArrowKey() {
         this.angle = 180;
@@ -101,6 +115,7 @@ class Princess extends Sprite {
     handleRightArrowKey() {
         this.angle = 0;
         this.speed = this.speedWhenWalking;
+
     }
     handleGameLoop() {
         if (this.angle == 0 && this.speed > 0) {
@@ -118,6 +133,7 @@ class Princess extends Sprite {
             this.isFalling = true; // she is falling so ...
             this.y = this.y + 4; // simulate gravity
         }
+        this.speed == 0;
 
     }
     handleSpacebar() {
@@ -128,7 +144,11 @@ class Princess extends Sprite {
     handleBoundaryContact() {
         game.end('Princess Ann has drowned.\n\nBetter luck next time.');
     }
+
+
 }
+
+
 
 let ann = new Princess();
 
@@ -138,7 +158,7 @@ class Crate extends Sprite {
     constructor() {
         super();
         this.x = 80;
-        this.y = 400;
+        this.y = 0;
         this.setImage("Crate.png");
         this.accelerateOnBounce = true;
         this.speed = 0;
@@ -151,7 +171,7 @@ class Crate extends Sprite {
             this.isFalling = true;
             this.y = this.y + 4;
             this.x = Math.max(10, this.x);
-            this.speed = 0;
+            this.speed == 0;
         }
     }
     handleBoundaryContact() {
@@ -183,8 +203,8 @@ let exit = new Door();
 class Bones extends Sprite {
     constructor(x, y, image) {
         super();
-        this.x = x;
-        this.y = y;
+        this.x = this.startX = x;
+        this.y = this.starty = y;
         this.setImage(image);
         this.accelerateOnBounce = true;
     }
@@ -200,22 +220,34 @@ class Bones extends Sprite {
 
     }
     handleCollision(otherSprite) {
+        if (otherSprite === !ann) {
+                    return false;
+                }
+
         if (otherSprite === ann) {
             let horizontalOffset = this.x - otherSprite.x;
             let verticalOffset = this.y - otherSprite.y;
             if (Math.abs(horizontalOffset) < this.width / 2 && Math.abs(verticalOffset) < 30) {
                 if (!ann.isFalling) {
                     otherSprite.y = otherSprite.y + 1;
+
+                }
+                if (otherSprite === !ann) {
+                    return false;
                 }
 
-            }
-            if (otherSprite === !ann) {
-                return false;
+
             }
 
         }
 
     }
+    handleBoundaryContact() {
+        this.x = this.startX;
+        this.y = this.starty;
+    }
 }
 
-let bones = new Bones(400, 70, "Bone2.png");
+
+let bones = new Bones(450, 0, "Bone2.png");
+let legbones = new Bones(150, 0, "Bone3.png");
