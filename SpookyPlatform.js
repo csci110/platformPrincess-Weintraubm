@@ -65,6 +65,10 @@ class Slider extends Support {
             this.accelerateOnBounce = false;
 
         }
+        if (this.y >= 550) {
+            this.angle = 0;
+            this.accelerateOnBounce = false;
+        }
 
         // if (this.x == 172 - 5) { // MAKE GO UP mk8
         //  this.angle = 90;
@@ -80,10 +84,10 @@ class Slider extends Support {
             this.angle = 90;
             this.accelerateOnBounce = false;
         }
-        if (otherSprite == stopPlatform) { //MAKE GO right mk6
-            this.angle = 0;
-            this.accelerateOnBounce = false;
-        }
+       // if (otherSprite == stopPlatform) { //MAKE GO right mk6
+         //   this.angle = 0;
+           // this.accelerateOnBounce = false;
+        //}
         if (otherSprite == newplatform) { //MAKE GO right mk6
             this.angle = 270;
             this.accelerateOnBounce = false;
@@ -127,7 +131,7 @@ class Princess extends Sprite {
         this.x = Math.max(5, this.x);
         this.isFalling = false; // assume she is not falling unless proven otherwise
         // Check directly below princess for supports
-        let supports = game.getSpritesOverlapping(this.x, this.y + this.height, this.width, 1, Support);
+        let supports = game.getSpritesOverlapping(this.x, this.y + this.height, this.width, 5, Support);
         // Is there none, or is its *top* at or below the bottom of the princess?
         if (supports.length === 0 || supports[0].y < this.y + this.height) {
             this.isFalling = true; // she is falling so ...
@@ -157,8 +161,8 @@ let ann = new Princess();
 class Crate extends Sprite {
     constructor() {
         super();
-        this.x = 80;
-        this.y = 0;
+        this.x = 48;
+        this.y = 400;
         this.setImage("Crate.png");
         this.accelerateOnBounce = true;
         this.speed = 0;
@@ -249,5 +253,5 @@ class Bones extends Sprite {
 }
 
 
-let bones = new Bones(450, 200, "Bone2.png");
-let legbones = new Bones(350, 200, "Bone3.png");
+//let bones = new Bones(450, 200, "Bone2.png");
+//let legbones = new Bones(350, 200, "Bone3.png");
